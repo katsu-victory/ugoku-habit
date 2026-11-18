@@ -1,0 +1,10 @@
+{
+  // Cloudflare の「Workers → リポジトリをインポート」でそのまま公開できます。
+  // データベース（D1）は初回デプロイ時に自動作成され、テーブルと通知用の鍵もアプリが自動で用意します。
+  "name": "ugoku-habit",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+  "triggers": { "crons": ["* * * * *"] },
+  "d1_databases": [{ "binding": "DB", "database_name": "ugoku-habit" }]
+}

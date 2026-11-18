@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d6b5c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="うごく習慣">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>うごく習慣ラボ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+:root{
+  --bg:#f4f6f3; --surface:#ffffff; --surface2:#eef2ee; --ink:#14201c; --sub:#62706b; --line:#e2e8e3;
+  --brand:#0d6b5c; --brand2:#2fa37c; --lime:#c7f06b; --brandSoft:#e3f3ec;
+  --warn:#c2620f; --warnSoft:#fdf1e4; --bad:#c43a2f; --badSoft:#fdebe9;
+  --mini:#8fd1b2; --empty:#e6ebe7;
+  --r:22px; --shadow:0 1px 2px rgba(16,40,30,.04),0 8px 24px rgba(16,40,30,.06);
+  --heroA:#0d6b5c; --heroB:#1f9a74;
+  --round:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#0e1412;--surface:#17201d;--surface2:#1e2925;--ink:#e9f0ec;--sub:#97a8a1;--line:#26332e;
+    --brand:#3cc597;--brand2:#2fa37c;--brandSoft:#18352b;--warn:#f2a463;--warnSoft:#33261a;--bad:#f2867c;--badSoft:#3a1f1c;
+    --mini:#2e7d60;--empty:#22302b;--shadow:none;--heroA:#0b4d42;--heroB:#137059}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic UI",sans-serif;line-height:1.65;font-size:15px;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+h1,h2,h3,.num,.round{font-family:var(--round)}
+h2{font-size:17px;margin:0 0 10px;font-weight:700;letter-spacing:.01em}
+h3{font-size:13px;margin:16px 0 6px;color:var(--sub);font-weight:700}
+p{margin:6px 0}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+.muted{color:var(--sub);font-size:13px}
+.small{font-size:12.5px}
+.hide{display:none!important}
+
+/* ---------- top bar ---------- */
+.topbar{padding:calc(14px + env(safe-area-inset-top)) 0 6px}
+.topbar .wrap{display:flex;align-items:center;gap:10px}
+.brandmark{width:30px;height:30px;border-radius:9px;flex:none}
+.title{font-family:var(--round);font-weight:900;font-size:18px;letter-spacing:.02em}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;padding:3px 10px;border-radius:999px;background:var(--brandSoft);color:var(--brand);font-weight:700}
+.pill.warn{background:var(--warnSoft);color:var(--warn)}
+.topbar .pill{margin-left:auto}
+
+/* ---------- bottom tab bar ---------- */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.tabbar .wrap{display:flex;padding:0 6px}
+.tabbar button{flex:1;background:none;border:0;padding:9px 0 8px;color:var(--sub);font:inherit;font-size:10.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.tabbar svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tabbar button.on{color:var(--brand)}
+.tabbar button.on svg{stroke-width:2.3}
+
+/* ---------- cards ---------- */
+main{padding-top:8px}
+.card{background:var(--surface);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid var(--line)}
+@media (prefers-color-scheme: light){.card{border-color:transparent}}
+.sec-title{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sec-title h2{margin:0}
+.sec-title .ic{width:30px;height:30px;border-radius:10px;background:var(--brandSoft);display:grid;place-items:center;font-size:16px;flex:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;border-radius:28px;padding:20px;color:#fff;margin-bottom:14px;
+  background:radial-gradient(120% 140% at 100% 0%,rgba(199,240,107,.35) 0%,transparent 45%),linear-gradient(140deg,var(--heroA),var(--heroB));
+  box-shadow:0 14px 34px -14px rgba(13,107,92,.55)}
+.hero:after{content:"";position:absolute;right:-60px;bottom:-80px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06)}
+.hero .greet{font-family:var(--round);font-weight:700;font-size:20px}
+.hero .date{opacity:.8;font-size:13px}
+.hero-main{display:flex;align-items:center;gap:18px;margin-top:14px;position:relative;z-index:1}
+.ring{position:relative;width:132px;height:132px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.ring .center b{font-family:var(--round);font-size:32px;font-weight:900}
+.ring .center span{font-size:11.5px;opacity:.85}
+.ring circle{transition:stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)}
+.hero-side{flex:1;min-width:0}
+.hstat{display:flex;align-items:baseline;gap:6px}
+.hstat b{font-family:var(--round);font-size:34px;font-weight:900;line-height:1}
+.hstat span{font-size:12.5px;opacity:.85}
+.dots{display:flex;gap:5px;margin:8px 0 10px}
+.dots i{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.18);display:block}
+.dots i.f{background:var(--lime)}
+.dots i.m{background:rgba(199,240,107,.55)}
+.dots i.x{background:transparent;border:2px solid rgba(255,255,255,.35)}
+.hsub{font-size:12px;opacity:.85}
+.strength{display:inline-flex;gap:4px;align-items:center;font-size:12px;background:rgba(255,255,255,.14);padding:3px 10px;border-radius:999px}
+
+/* ---------- plan / if-then ---------- */
+.ifthen{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;background:var(--surface2);border-radius:16px;padding:12px 14px;margin:6px 0}
+.ifthen .k{font-family:var(--round);font-size:11px;font-weight:900;color:#fff;background:var(--brand);border-radius:8px;padding:2px 8px;text-align:center}
+.ifthen .k.then{background:var(--brand2)}
+.ifthen .k.mini{background:var(--warn)}
+.ifthen .v{font-weight:600;font-size:14.5px}
+.ifthen.compact{padding:10px 12px}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;border-radius:14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:transform .08s}
+.btn:active{transform:scale(.97)}
+.btn.pri{background:linear-gradient(135deg,var(--brand),var(--brand2));border:0;color:#fff;box-shadow:0 8px 18px -8px rgba(13,107,92,.7)}
+.btn.soft{background:var(--brandSoft);border-color:transparent;color:var(--brand)}
+.btn.ghost{background:none;border-color:transparent;color:var(--sub);font-weight:500}
+.btn.sm{padding:6px 12px;font-size:13px;border-radius:11px}
+.btn.danger{color:var(--bad)}
+.btn.block{width:100%}
+.cta{display:grid;grid-template-columns:1.4fr 1fr;gap:10px;margin-top:14px}
+.cta .btn{padding:18px 10px;font-size:16px;border-radius:18px;flex-direction:column;gap:2px}
+.cta .btn small{font-size:11px;font-weight:500;opacity:.85}
+.cta .btn .e{font-size:22px;line-height:1}
+.links{display:flex;gap:4px;margin-top:6px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- forms ---------- */
+label{display:block;font-size:13px;color:var(--sub);margin:12px 0 5px;font-weight:600}
+input[type=text],input[type=number],input[type=time],textarea,select{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--ink);font:inherit;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--brand)}
+textarea{min-height:70px;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1;min-width:130px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1.5px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13px;cursor:pointer;background:var(--surface);color:var(--ink);font-family:inherit;font-weight:500}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.days .chip{width:40px;height:40px;padding:0;display:grid;place-items:center;font-weight:700}
+.scale{display:flex;gap:4px}
+.scale button{flex:1;min-width:0;padding:9px 0;border:0;background:var(--surface2);color:var(--ink);border-radius:10px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.scale button.on{background:var(--brand);color:#fff}
+.scalelab{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:3px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;font-size:14px;color:var(--ink);margin:6px 0;background:var(--surface2);border-radius:12px;font-weight:500;cursor:pointer}
+.check input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--brand)}
+.switch{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);margin:0;color:var(--ink);font-weight:500;font-size:14px;cursor:pointer}
+.switch:last-child{border-bottom:0}
+.switch .t{flex:1}
+.switch .t small{display:block;color:var(--sub);font-weight:400;font-size:12px}
+.switch input[type=checkbox]{appearance:none;width:46px;height:28px;border-radius:999px;background:var(--empty);position:relative;cursor:pointer;flex:none;transition:background .2s}
+.switch input[type=checkbox]:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.switch input[type=checkbox]:checked{background:var(--brand)}
+.switch input[type=checkbox]:checked:after{transform:translateX(18px)}
+.switch input[type=time]{width:auto;padding:6px 8px}
+
+/* ---------- notes ---------- */
+.note{border-radius:16px;background:var(--brandSoft);padding:12px 14px;font-size:14px;margin:10px 0}
+.note.warn{background:var(--warnSoft)}
+.note.bad{background:var(--badSoft)}
+.note b{color:inherit}
+.banner{display:flex;gap:12px;align-items:center;border-radius:18px;padding:12px 14px;margin-bottom:14px;background:var(--warnSoft);font-size:14px}
+.banner .e{font-size:24px}
+
+/* ---------- stats ---------- */
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat>div{background:var(--surface2);border-radius:16px;padding:12px 6px;text-align:center}
+.stat b{display:block;font-family:var(--round);font-size:24px;font-weight:900;line-height:1.2;color:var(--brand)}
+.stat span{font-size:11.5px;color:var(--sub)}
+.bar{height:10px;background:var(--empty);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:6px}
+
+/* ---------- heatmap ---------- */
+.heat{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.heat div{aspect-ratio:1;border-radius:8px;background:var(--empty);font-size:10px;display:flex;align-items:center;justify-content:center;color:var(--sub)}
+.heat .full{background:var(--brand);color:#fff}
+.heat .mini{background:var(--mini);color:#fff}
+.heat .rest{background:transparent;border:1.5px dashed var(--line)}
+.heat .today{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--brand2)}
+.heat .wd{background:none;aspect-ratio:auto;font-size:11px;font-weight:700}
+.legend{display:flex;gap:12px;font-size:12px;color:var(--sub);margin-top:10px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+svg text{fill:var(--sub);font-size:10px}
+
+.list{list-style:none;padding:0;margin:0}
+.list li{display:flex;gap:8px;align-items:center;padding:4px 0}
+.x{margin-left:auto;background:var(--surface2);border:0;color:var(--sub);cursor:pointer;font-size:14px;width:30px;height:30px;border-radius:50%;flex:none}
+
+/* ---------- done state ---------- */
+.done{text-align:center;padding:6px 0 4px}
+.done .badge{width:76px;height:76px;margin:4px auto 8px;border-radius:50%;display:grid;place-items:center;font-size:38px;background:linear-gradient(140deg,var(--brandSoft),color-mix(in srgb,var(--lime) 40%,var(--brandSoft)))}
+.done h2{font-size:20px;margin:4px 0}
+
+/* ---------- onboarding ---------- */
+.ob{min-height:100vh;padding:calc(18px + env(safe-area-inset-top)) 0 30px}
+.steps{display:flex;gap:5px;margin:4px 0 18px}
+.steps i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.steps i.on{background:linear-gradient(90deg,var(--brand),var(--brand2))}
+.ob h1{font-size:25px;line-height:1.35;margin:0 0 8px;font-weight:900}
+.ob .lead{color:var(--sub);margin-bottom:16px}
+.welcome{text-align:center;padding-top:7vh}
+.welcome .logo{width:96px;height:96px;border-radius:28px;margin:0 auto 18px;box-shadow:0 18px 40px -16px rgba(13,107,92,.7);display:block}
+.welcome h1{font-size:30px}
+.feat{display:grid;gap:10px;margin:22px 0;text-align:left}
+.feat div{display:flex;gap:12px;align-items:center;background:var(--surface);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);font-size:14px}
+.feat .e{font-size:22px;width:40px;height:40px;border-radius:12px;background:var(--brandSoft);display:grid;place-items:center;flex:none}
+.obnav{position:sticky;bottom:0;padding:14px 0 calc(14px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 30%)}
+.obnav .btn{width:100%;padding:16px;font-size:16px;border-radius:18px}
+
+/* ---------- sheets / toast ---------- */
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translate(-50%,10px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:14px;font-size:14px;z-index:60;opacity:0;transition:all .25s;pointer-events:none;max-width:90%;font-weight:600}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.modal{position:fixed;inset:0;background:rgba(8,20,16,.5);z-index:40;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.modal .sheet{background:var(--surface);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:26px 26px 0 0;padding:10px 18px calc(24px + env(safe-area-inset-bottom));animation:up .28s cubic-bezier(.2,.8,.2,1)}
+.modal .grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 12px}
+@media(min-width:620px){.modal{align-items:center}.modal .sheet{border-radius:26px}}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+@keyframes fade{from{opacity:0}}
+
+/* ---------- confetti ---------- */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+.confetti i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:fall 1.6s cubic-bezier(.3,.6,.4,1) forwards}
+@keyframes fall{to{transform:translate(var(--dx),105vh) rotate(var(--rot));opacity:.9}}
+@media (prefers-reduced-motion: reduce){.confetti{display:none}.ring circle{transition:none}.modal .sheet{animation:none}}
+</style>
+</head>
+<body>
+<header class="topbar hide" id="topbar"><div class="wrap">
+  <svg class="brandmark" viewBox="0 0 512 512"><defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d6b5c"/><stop offset="1" stop-color="#2fa37c"/></linearGradient></defs><rect width="512" height="512" rx="120" fill="url(#bm)"/><circle cx="256" cy="256" r="150" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="34"/><path d="M256 106a150 150 0 0 1 142 102" fill="none" stroke="#d9f99d" stroke-width="34" stroke-linecap="round"/><path d="M196 262l44 44 84-96" fill="none" stroke="#fff" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="title" id="pageTitle">うごく習慣ラボ</div>
+  <span class="pill" id="phaseBadge"></span>
+</div></header>
+<main class="wrap" id="app"></main>
+<nav class="tabbar hide" id="nav"><div class="wrap">
+  <button data-tab="today" class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>今日</button>
+  <button data-tab="progress"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>記録</button>
+  <button data-tab="plan"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>プラン</button>
+  <button data-tab="habit"><svg viewBox="0 0 24 24"><path d="M12 21c-5-3-8-7-8-11a8 8 0 0 1 16 0c0 4-3 8-8 11z"/><path d="M12 21V9"/><path d="M12 13l-3-3M12 11l3-3"/></svg>習慣度</button>
+  <button data-tab="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>設定</button>
+</div></nav>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   うごく習慣ラボ — 運動習慣化のための行動変容ツール
+   データはすべてこの端末の localStorage に保存（外部送信なし）
+   ========================================================= */
+const KEY='ugoku-habit-v1';
+const DOW=['日','月','火','水','木','金','土'];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const todayStr=()=>ymd(new Date());
+const weekStart=d=>{const x=new Date(d);const k=(x.getDay()+6)%7;x.setDate(x.getDate()-k);x.setHours(0,0,0,0);return x}; // 月曜始まり
+const toMin=t=>{const[a,b]=(t||'0:0').split(':').map(Number);return a*60+b};
+
+const SAFETY_Q=[
+ {id:'heart',t:'医師から心臓の病気や高血圧を指摘され、運動は医療者の管理下でと言われている'},
+ {id:'chest',t:'安静時や運動時に胸の痛み・圧迫感がある'},
+ {id:'dizzy',t:'めまいでふらつく、または最近意識を失ったことがある'},
+ {id:'treat',t:'現在、化学療法・放射線療法・分子標的薬などの治療中、または治療終了後3か月以内'},
+ {id:'surgery',t:'最近（おおむね8週以内）手術を受けた／傷が治りきっていない'},
+ {id:'bone',t:'骨転移・骨粗しょう症など、骨がもろいと言われている'},
+ {id:'blood',t:'血球減少（貧血・白血球や血小板の低下）や発熱を指摘されている'},
+ {id:'lymph',t:'リンパ浮腫がある、または腕や脚のむくみが急に強くなった'},
+ {id:'neuro',t:'しびれ（末梢神経障害）やバランスの悪さで転びそうになる'},
+ {id:'other',t:'その他、医療者から運動を制限されている理由がある'},
+];
+const RED_FLAGS=['胸の痛み・圧迫感','強い息切れ（会話できない）','めまい・ふらつき・失神しそう','動悸・脈が乱れる感じ','38℃以上の発熱','いつもと違う出血・あざ','新しい／強くなった骨の痛み','腕や脚の急なむくみ・痛み'];
+const EX_TYPES=[
+ {id:'walk',n:'ウォーキング',e:'🚶',aer:true},{id:'cycle',n:'自転車・エアロバイク',e:'🚴',aer:true},{id:'jog',n:'ジョギング',e:'🏃',aer:true},
+ {id:'strength',n:'筋トレ（自重・バンド）',e:'💪',str:true},{id:'hiit',n:'HIIT（高強度インターバル）',e:'⚡',aer:true,hiit:true},
+ {id:'yoga',n:'ヨガ・ストレッチ',e:'🧘'},{id:'other',n:'その他',e:'✨',aer:true}
+];
+const exOf=id=>EX_TYPES.find(t=>t.id===id)||EX_TYPES[0];
+const SRBAI=['意識しなくても自然にやっている','考えなくても、気づけばやっている','やろうと思い出さなくてもやっている','やり始めてから、自分が「やっている」と気づく'];
+const BARRIERS=['疲れている・だるい','時間がない','天気が悪い','気分が乗らない','体調・症状が気になる','予定が崩れた','一人だと続かない','忘れてしまう'];
+const COPING_SUGGEST={
+ '疲れている・だるい':'5分だけのミニ版をやる（だるさは軽い運動で和らぐことが多い）',
+ '時間がない':'ミニ版（2〜5分）に切り替える／階段を使う',
+ '天気が悪い':'室内メニュー（足踏み・スクワット・動画）に切り替える',
+ '気分が乗らない':'靴を履いて玄関を出るだけでOKとする',
+ '体調・症状が気になる':'ストレッチか深呼吸に置き換え、症状を記録する',
+ '予定が崩れた':'その日のうちの別のきっかけ（夕食後など）にずらす',
+ '一人だと続かない':'家族や友人に今日やると宣言・一緒に歩く',
+ '忘れてしまう':'きっかけの場所に靴やバンドを置く／通知をオンにする'
+};
+
+let S=load();
+let tab='today';
+
+function blank(){return{
+  v:2,created:todayStr(),onboarded:false,
+  profile:{why:'',values:[],confidence:7},
+  safety:{answers:{},clearance:false,date:null},
+  comb:{cap:5,opp:5,mot:5},
+  plan:{anchor:'',behavior:'ウォーキング',type:'walk',minutes:10,mini:'玄関を出て2分歩く',place:'',time:'',days:[1,3,5],ifthen:[],coping:[],strengthDays:0,weeklyGoal:30,startGoal:30},
+  notif:{enabled:false,cue:true,cueTime:'',nudge:true,nudgeTime:'20:00',review:true,sent:{}},
+  logs:{},srbai:[],reviews:[],wins:[],lastProgressCheck:null
+}}
+function load(){try{const r=localStorage.getItem(KEY);if(r){const d=JSON.parse(r),b=blank();return Object.assign(b,d,{plan:Object.assign(b.plan,d.plan||{}),notif:Object.assign(b.notif,d.notif||{})})}}catch(e){}return blank()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('保存できませんでした（ブラウザ設定を確認）')}syncSchedule()}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2400)}
+
+/* ---------- 計算 ---------- */
+const riskCount=()=>Object.values(S.safety.answers).filter(v=>v===true).length;
+const hiitAllowed=()=>riskCount()===0||S.safety.clearance;
+const isPlanned=d=>S.plan.days.includes(d.getDay());
+const doneOf=s=>{const l=S.logs[s];return l&&(l.status==='full'||l.status==='mini')};
+
+// 「2回続けて休まない」ルールの連続記録：単発の休みは許容、予定日の未実施が2回続くとリセット
+function chain(){
+  let count=0,misses=0,forgiven=0,d=new Date();d.setHours(0,0,0,0);
+  const start=parse(S.created);
+  if(!doneOf(ymd(d)))d=addDays(d,-1); // 今日の未記録はまだ途中
+  let guard=0;
+  while(d>=start&&guard<800){guard++;
+    const s=ymd(d);
+    if(doneOf(s)){count++;if(misses===1&&count>1)forgiven++;misses=0}
+    else if(isPlanned(d)){misses++;if(misses>=2)break}
+    d=addDays(d,-1);
+  }
+  return {count,forgiven};
+}
+// 直近7回の予定日の結果（ヒーローのドット表示用）
+function recentPlanned(){
+  const out=[];let d=new Date();d.setHours(0,0,0,0);const start=parse(S.created);let g=0;
+  while(out.length<7&&g<60){g++;const s=ymd(d),l=S.logs[s];
+    if(isPlanned(d)||doneOf(s)){
+      if(d<start)out.push('');
+      else if(l&&l.status==='full')out.push('f');else if(l&&l.status==='mini')out.push('m');
+      else if(s===todayStr())out.push('');else out.push('x');}
+    d=addDays(d,-1)}
+  return out.reverse();
+}
+function weekStats(ws){
+  let min=0,days=0,str=0,full=0,mini=0,planned=0;
+  for(let i=0;i<7;i++){const d=addDays(ws,i),s=ymd(d),l=S.logs[s];
+    if(isPlanned(d))planned++;
+    if(l&&(l.status==='full'||l.status==='mini')){days++;min+=Number(l.min)||0;if(l.status==='full')full++;else mini++;
+      if(exOf(l.type).str||l.strength)str++;}}
+  return{min,days,str,full,mini,planned};
+}
+function phase(){
+  const weeks=Math.floor((Date.now()-parse(S.created))/864e5/7);
+  const sr=S.srbai.length?S.srbai[S.srbai.length-1]:null;
+  if(sr&&sr.mean>=5.5&&weeks>=8)return{n:'維持期',e:'🌳',d:'行動がかなり自動化しています。崩れたときの立て直しプランを磨きましょう。'};
+  if(weeks>=3||(sr&&sr.mean>=4))return{n:'形成期',e:'🌿',d:'きっかけ→行動のつながりが育っている時期。同じきっかけ・同じ場所を続けるほど強くなります。'};
+  return{n:'開始期',e:'🌱',d:'まずは「小さく・確実に」。量より、決めたきっかけで毎回始めることが大切です。'};
+}
+// 段階的目標調整（成功体験ベース）
+function progressionAdvice(){
+  const ws=weekStart(new Date());
+  const w1=weekStats(addDays(ws,-7)),w2=weekStats(addDays(ws,-14));
+  const g=S.plan.weeklyGoal;
+  const recent=Object.entries(S.logs).filter(([k])=>parse(k)>=addDays(ws,-14)&&parse(k)<ws).map(([,v])=>v);
+  const rpes=recent.map(l=>Number(l.rpe)).filter(n=>n>0);
+  const avgRpe=rpes.length?rpes.reduce((a,b)=>a+b,0)/rpes.length:null;
+  if(Object.keys(S.logs).length<5)return null;
+  if(recent.some(l=>l.flags&&l.flags.length))return{kind:'hold',msg:'最近、注意が必要な症状の記録があります。目標は据え置き、医療者に相談してから増やしましょう。'};
+  if(w1.min>=g&&w2.min>=g&&(avgRpe===null||avgRpe<=6)&&g<300){
+    const next=Math.min(300,Math.round((g*1.15)/5)*5||g+5);
+    return{kind:'up',next,msg:`2週続けて目標（週${g}分）を達成し、きつさも適度です。週${next}分に少しだけ上げてみませんか？`};
+  }
+  if(w1.min<g*0.5&&w2.min<g*0.5&&g>15){
+    const next=Math.max(10,Math.round((Math.max(w1.min,w2.min,g*0.6))/5)*5);
+    return{kind:'down',next,msg:`ここ2週は目標の半分未満でした。失敗ではなく「目標が大きすぎた」サインです。週${next}分にして、確実に達成する体験を積みましょう。`};
+  }
+  return null;
+}
+
+/* ---------- 共通UI部品 ---------- */
+function scale(name,val,min,max,labL,labR){
+  let h=`<div class="scale" data-scale="${name}">`;
+  for(let i=min;i<=max;i++)h+=`<button type="button" data-v="${i}" class="${val!=null&&Number(val)===i?'on':''}">${i}</button>`;
+  return h+`</div><div class="scalelab"><span>${labL}</span><span>${labR}</span></div>`;
+}
+function bindScales(root,obj){
+  root.querySelectorAll('[data-scale]').forEach(el=>{
+    el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+      el.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+      obj[el.dataset.scale]=Number(b.dataset.v);});
+  });
+}
+function modal(html,onMount){
+  const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class="sheet"><div class="grab"></div>${html}</div>`;
+  m.addEventListener('click',e=>{if(e.target===m)m.remove()});
+  document.body.appendChild(m);onMount&&onMount(m.querySelector('.sheet'),()=>m.remove());return m;
+}
+function confetti(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const c=document.createElement('div');c.className='confetti';
+  const cols=['#0d6b5c','#2fa37c','#c7f06b','#ffd166','#7dd3c0','#f4a261'];
+  for(let i=0;i<46;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'vw';p.style.background=cols[i%cols.length];
+    p.style.setProperty('--dx',(Math.random()*160-80)+'px');p.style.setProperty('--rot',(Math.random()*900-450)+'deg');
+    p.style.animationDelay=(Math.random()*.25)+'s';p.style.animationDuration=(1.2+Math.random()*.9)+'s';c.appendChild(p)}
+  document.body.appendChild(c);setTimeout(()=>c.remove(),2600);
+}
+function ifthenBlock(p,compact){
+  return `<div class="ifthen ${compact?'compact':''}"><span class="k">IF</span><span class="v">${esc(p.anchor||'（きっかけ）')}</span>
+   <span class="k then">THEN</span><span class="v">${exOf(p.type).e} ${p.place?esc(p.place)+'で ':''}${esc(p.behavior)}を${p.minutes}分${p.time?` <span class="muted small">${esc(p.time)}ごろ</span>`:''}</span>
+   <span class="k mini">MINI</span><span class="v" style="font-weight:500">${esc(p.mini)}</span></div>`;
+}
+
+/* =========================================================
+   オンボーディング（安全確認 → 動機 → COM-B → 計画 → 目標）
+   ========================================================= */
+let ob={step:0};
+function renderOnboarding(){
+  $('#nav').classList.add('hide');$('#topbar').classList.add('hide');
+  const st=ob.step,N=6;
+  const steps=`<div class="steps">${Array.from({length:N-1},(_,i)=>`<i class="${i<st?'on':''}"></i>`).join('')}</div>`;
+  let h='<div class="ob">';
+  if(st===0){
+    h+=`<div class="welcome"><img class="logo" src="data:image/svg+xml;utf8,${encodeURIComponent(document.querySelector('.brandmark').outerHTML.replace('<svg','<svg xmlns=&quot;http://www.w3.org/2000/svg&quot;').replace(/&quot;/g,'"'))}" alt="">
+    <h1>うごく習慣ラボ</h1><p class="lead">やる気に頼らず、しくみで続ける。<br>運動を「いつもの自分」にするためのアプリです。</p></div>
+    <div class="feat">
+      <div><span class="e">🔗</span><span><b>いつもの行動にくっつける</b><br><span class="muted">「もし〇〇したら、△△する」で迷わない</span></span></div>
+      <div><span class="e">🌱</span><span><b>小さく始めて、少しずつ増やす</b><br><span class="muted">達成が続いたら自動で目標を提案</span></span></div>
+      <div><span class="e">🔔</span><span><b>決めた時間にお知らせ</b><br><span class="muted">通知からワンタップで記録</span></span></div>
+      <div><span class="e">🤝</span><span><b>1回休んでも大丈夫</b><br><span class="muted">2回続けて休まなければ記録はつながる</span></span></div>
+    </div>
+    <p class="muted small" style="text-align:center">所要時間 約5分 ・ データはこの端末の中だけに保存されます</p>
+    <div class="obnav"><button class="btn pri" id="next">はじめる</button></div>`;
+  }else if(st===1){
+    h+=`${steps}<h1>まず、安全の確認から</h1><p class="lead">あてはまるものをタップしてください。なければそのまま次へ。</p>
+    ${SAFETY_Q.map(q=>`<label class="check"><input type="checkbox" data-q="${q.id}" ${S.safety.answers[q.id]?'checked':''}>${esc(q.t)}</label>`).join('')}
+    <div id="safeMsg"></div>
+    <div class="obnav"><button class="btn pri" id="next">次へ</button></div>`;
+  }else if(st===2){
+    const vals=['家族との時間','仕事を続ける','再発予防','体力を取り戻す','気分を整える','よく眠る','旅行に行く','自分らしくいる'];
+    h+=`${steps}<h1>あなたが動く「理由」は？</h1>
+    <p class="lead">運動そのものより、その先にある大切なこと。くじけそうな日に、ここで選んだ言葉が表示されます。</p>
+    <div class="chips" id="vals">${vals.map(v=>`<button type="button" class="chip ${S.profile.values.includes(v)?'on':''}">${v}</button>`).join('')}</div>
+    <label>自分の言葉で</label>
+    <textarea id="why" placeholder="例：孫と公園を走り回れる体でいたい">${esc(S.profile.why)}</textarea>
+    <div class="obnav"><button class="btn pri" id="next">次へ</button></div>`;
+  }else if(st===3){
+    h+=`${steps}<h1>いまの自分をチェック</h1>
+    <p class="lead">行動には「能力」「機会」「動機」の3つがそろう必要があります（COM-Bモデル）。いちばん低いところを優先して支援します。</p>
+    <div class="card"><label style="margin-top:0">💡 能力：やり方がわかり、体力的にもできそう</label>${scale('cap',S.comb.cap,0,10,'全く','とても')}
+    <label>🗓️ 機会：時間・場所・周りの協力がある</label>${scale('opp',S.comb.opp,0,10,'全くない','十分')}
+    <label>🔥 動機：やりたい・やるべきだと感じる</label>${scale('mot',S.comb.mot,0,10,'全くない','とても強い')}</div>
+    <div class="obnav"><button class="btn pri" id="next">次へ</button></div>`;
+  }else if(st===4){
+    const p=S.plan;
+    const types=EX_TYPES.filter(t=>!t.hiit||hiitAllowed());
+    h+=`${steps}<h1>習慣の設計図をつくる</h1>
+    <p class="lead">毎日すでにしている行動（きっかけ）に、運動をくっつけます。</p>
+    <label>きっかけ</label>
+    <div class="chips" id="anchors">${['朝のコーヒーを飲んだら','朝食を食べ終えたら','歯みがきをしたら','帰宅して靴を脱ぐ前に','昼食後','夕食の片付けが終わったら'].map(a=>`<button type="button" class="chip ${p.anchor===a?'on':''}">${a}</button>`).join('')}</div>
+    <input type="text" id="anchor" value="${esc(p.anchor)}" placeholder="自由に書いてもOK" style="margin-top:8px">
+    <div class="row"><div><label>運動</label><select id="type">${types.map(t=>`<option value="${t.id}" ${p.type===t.id?'selected':''}>${t.e} ${t.n}</option>`).join('')}</select></div>
+    <div style="max-width:120px"><label>時間（分）</label><input type="number" id="minutes" min="1" max="120" value="${p.minutes}"></div></div>
+    <label>ミニ版（どんなにしんどい日でもできる最小の行動）</label>
+    <input type="text" id="mini" value="${esc(p.mini)}">
+    <div class="row"><div><label>場所</label><input type="text" id="place" value="${esc(p.place)}" placeholder="例：家の前の公園"></div>
+    <div style="max-width:150px"><label>時刻（通知に使います）</label><input type="time" id="time" value="${esc(p.time)}"></div></div>
+    <label>曜日</label>
+    <div class="chips days" id="days">${DOW.map((d,i)=>`<button type="button" class="chip ${p.days.includes(i)?'on':''}" data-d="${i}">${d}</button>`).join('')}</div>
+    <h3>プレビュー</h3><div id="planPreview"></div>
+    <div class="obnav"><button class="btn pri" id="next">次へ</button></div>`;
+  }else if(st===5){
+    const days=S.plan.days.length;
+    h+=`${steps}<h1>最初の目標と自信</h1>
+    <div class="card"><p style="margin-top:0">計画どおりなら週 <b>${days*S.plan.minutes}分</b> です。</p>
+    <label>最初の週目標（分）</label><input type="number" id="goal" min="5" max="600" value="${S.plan.weeklyGoal}">
+    <p class="muted small">長期的な目安は「週150分の中強度運動＋週2回の筋トレ」。がんサバイバーでは週90分の有酸素運動＋週2回の筋トレでも効果が示されています。でも最初は<b>確実にできる量</b>から。達成が続けば少しずつ上げる提案をします。</p>
+    <label>週に何回、筋トレを入れますか？</label>${scale('strengthDays',S.plan.strengthDays,0,3,'なし','3回')}
+    <label>この計画を今週やりとげる自信は？</label>${scale('confidence',S.profile.confidence,0,10,'全くない','完全にある')}
+    <div id="confMsg"></div></div>
+    <div class="obnav"><button class="btn pri" id="next">スタート！</button></div>`;
+  }
+  $('#app').innerHTML=h+'</div>';window.scrollTo(0,0);
+  const next=$('#next');
+  if(st===1){
+    const upd=()=>{const n=riskCount();$('#safeMsg').innerHTML=n?`<div class="note warn"><b>${n}項目があてはまりました。</b>運動はほとんどの方に有益ですが、始める前に主治医や医療者に相談してください。当面は<b>低〜中強度</b>のメニューを提案し、HIITは医療者の許可を記録するまで表示しません。<label class="check" style="margin-top:8px;background:transparent;padding:4px 0"><input type="checkbox" id="clear" ${S.safety.clearance?'checked':''}>医療者から運動（高強度を含む）の許可を得ている</label></div>`:`<div class="note">特に問題はありません。運動中に胸の痛み・強い息切れ・めまいなどが出たら、すぐ中止してください。</div>`;
+      const c=$('#clear');c&&c.addEventListener('change',()=>{S.safety.clearance=c.checked})};
+    document.querySelectorAll('[data-q]').forEach(c=>c.addEventListener('change',()=>{S.safety.answers[c.dataset.q]=c.checked;upd()}));upd();
+  }
+  if(st===2){$('#vals').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;b.classList.toggle('on');const v=b.textContent;S.profile.values=b.classList.contains('on')?[...S.profile.values,v]:S.profile.values.filter(x=>x!==v)})}
+  if(st===3)bindScales($('#app'),S.comb);
+  if(st===4){
+    const p=S.plan;
+    const prev=()=>{const ty=exOf($('#type').value);$('#planPreview').innerHTML=ifthenBlock({anchor:$('#anchor').value,type:ty.id,behavior:ty.n,minutes:$('#minutes').value,place:$('#place').value,time:$('#time').value,mini:$('#mini').value})};
+    $('#anchors').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;$('#anchors').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#anchor').value=b.textContent;prev()});
+    $('#days').addEventListener('click',e=>{const b=e.target.closest('.chip');b&&b.classList.toggle('on')});
+    ['anchor','type','minutes','mini','place','time'].forEach(id=>$('#'+id).addEventListener('input',prev));prev();
+    next.onclick=()=>{
+      const days=[...$('#days').querySelectorAll('.chip.on')].map(b=>Number(b.dataset.d));
+      if(!$('#anchor').value.trim()){toast('きっかけを決めましょう');return}
+      if(!days.length){toast('曜日を1つ以上選んでください');return}
+      Object.assign(p,{anchor:$('#anchor').value.trim(),type:$('#type').value,behavior:exOf($('#type').value).n,minutes:Math.max(1,Number($('#minutes').value)||10),mini:$('#mini').value.trim()||'2分だけ動く',place:$('#place').value.trim(),time:$('#time').value,days:days.sort()});
+      p.weeklyGoal=Math.max(10,Math.round(days.length*p.minutes/5)*5);
+      ob.step++;save();renderOnboarding();
+    };return;
+  }
+  if(st===5){
+    const cm=()=>{$('#confMsg').innerHTML=S.profile.confidence<7?`<div class="note warn">自信度が7未満のときは、計画を<b>もう少し小さく</b>するのがおすすめです。「確実にできた」体験が、次の自信を育てます。<br><button class="btn sm" id="back" style="margin-top:8px">計画を見直す</button></div>`:`<div class="note">いい感じです。この自信を、実際の「できた」で確かなものにしていきましょう。</div>`;
+      const b=$('#back');b&&(b.onclick=()=>{ob.step=4;renderOnboarding()})};
+    bindScales($('#app'),new Proxy({},{set:(o,k,v)=>{if(k==='confidence')S.profile.confidence=v;else S.plan[k]=v;cm();return true}}));cm();
+    next.onclick=()=>{
+      S.plan.weeklyGoal=Math.max(5,Number($('#goal').value)||30);S.plan.startGoal=S.plan.weeklyGoal;
+      if(!S.plan.ifthen.length)S.plan.ifthen=[{if:S.plan.anchor,then:`${S.plan.behavior}を${S.plan.minutes}分する`}];
+      if(!S.plan.coping.length){
+        const low=Object.entries(S.comb).sort((a,b)=>a[1]-b[1])[0][0];
+        const base={cap:['体調・症状が気になる'],opp:['時間がない','予定が崩れた'],mot:['気分が乗らない','疲れている・だるい']}[low];
+        S.plan.coping=base.map(b=>({barrier:b,plan:COPING_SUGGEST[b]}));
+      }
+      S.notif.cueTime=S.notif.cueTime||S.plan.time||'';
+      S.safety.date=todayStr();S.onboarded=true;save();
+      go('today');confetti();toast('スタートしました！');
+      setTimeout(()=>notifOffer(),900);
+    };return;
+  }
+  next.onclick=()=>{if(st===2)S.profile.why=$('#why').value.trim();ob.step++;save();renderOnboarding()};
+}
+
+/* =========================================================
+   今日
+   ========================================================= */
+function greeting(){const h=new Date().getHours();return h<5?'こんばんは':h<11?'おはようございます':h<18?'こんにちは':'こんばんは'}
+function renderToday(){
+  const t=todayStr(),d=new Date(),p=S.plan,l=S.logs[t];
+  const planned=isPlanned(d),ch=chain();
+  const w=weekStats(weekStart(d));
+  const pct=Math.min(1,w.min/p.weeklyGoal);
+  const R=56,C=2*Math.PI*R;
+  const lastPlannedMissed=(()=>{for(let i=1;i<8;i++){const x=addDays(d,-i);if(parse(S.created)>x)return false;if(isPlanned(x))return !doneOf(ymd(x))}return false})();
+  const dots=recentPlanned();
+  let h='';
+  h+=`<section class="hero">
+    <div class="greet">${greeting()}</div>
+    <div class="date">${d.getMonth()+1}月${d.getDate()}日（${DOW[d.getDay()]}）・${planned?'今日は予定日':'今日は予定外の日'}</div>
+    <div class="hero-main">
+      <div class="ring"><svg width="132" height="132" viewBox="0 0 132 132">
+        <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9ffb8"/><stop offset="1" stop-color="#c7f06b"/></linearGradient></defs>
+        <circle cx="66" cy="66" r="${R}" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="13"/>
+        <circle id="ringArc" cx="66" cy="66" r="${R}" fill="none" stroke="url(#rg)" stroke-width="13" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}"/>
+      </svg><div class="center"><b>${w.min}</b><span>/ ${p.weeklyGoal}分 今週</span></div></div>
+      <div class="hero-side">
+        <div class="hstat"><b>${ch.count}</b><span>回 連続</span></div>
+        <div class="dots" title="直近の予定日">${dots.map(x=>`<i class="${x}"></i>`).join('')}</div>
+        <div class="hsub">${pct>=1?'🎉 今週の目標達成！':`目標まであと ${Math.max(0,p.weeklyGoal-w.min)}分`}</div>
+        ${p.strengthDays?`<div class="strength" style="margin-top:8px">💪 筋トレ ${w.str}/${p.strengthDays}回</div>`:''}
+      </div>
+    </div></section>`;
+  if(canInstall()&&!S.installDismissed){
+    h+=`<div class="banner" style="background:var(--brandSoft)"><span class="e">📲</span><span style="flex:1">ホーム画面に追加すると、アプリのように使えます${isIOS?'（iPhoneの通知に必要）':''}</span><button class="btn sm pri" id="inst">追加</button><button class="x" id="instX" aria-label="閉じる">✕</button></div>`;
+  }else if(!S.notif.enabled&&!S.notif.dismissed&&('Notification' in window||isIOS)){
+    h+=`<div class="banner" style="background:var(--brandSoft)"><span class="e">🔔</span><span style="flex:1">決めた時間に通知を受け取りますか？</span><button class="btn sm pri" id="nOn">オンにする</button></div>`;
+  }
+  if(planned&&!doneOf(t)&&lastPlannedMissed&&!(l&&l.status==='rest')){
+    h+=`<div class="banner"><span class="e">🤝</span><span><b>今日は「2回続けて休まない」日。</b><br><span class="small">前回はお休みでした。ミニ版だけでも記録はつながります。</span></span></div>`;
+  }
+  if(doneOf(t)){
+    h+=`<div class="card done"><div class="badge">${l.status==='full'?'🌿':'🌱'}</div>
+      <h2>${l.status==='full'?'今日もやりました！':'ミニ版、立派です'}</h2>
+      <p class="muted">${exOf(l.type).e} ${esc(exOf(l.type).n)} ・ ${esc(l.min)}分${l.rpe!=null?` ・ きつさ ${l.rpe}/10`:''}</p>
+      ${l.moodBefore!=null&&l.moodAfter!=null&&l.moodAfter>l.moodBefore?`<div class="note">気分が <b>${l.moodBefore} → ${l.moodAfter}</b> に上がりました。この感覚を覚えておきましょう。</div>`:''}
+      ${l.flags&&l.flags.length?`<div class="note bad" style="text-align:left">記録された症状：${l.flags.map(esc).join('、')}<br>症状が続く・強い場合は運動を中止し、医療者に連絡してください。</div>`:''}
+      <button class="btn sm soft" id="edit">記録を編集</button></div>`;
+  }else if(l&&l.status==='rest'){
+    h+=`<div class="card done"><div class="badge">🛌</div><h2>今日は休養日</h2><p class="muted">休むのも計画のうち。次の予定日にまた始めましょう。</p><button class="btn sm soft" id="edit">記録を変更</button></div>`;
+  }else{
+    h+=`<div class="card"><div class="sec-title"><span class="ic">🎯</span><h2>${planned?'今日のプラン':'動いた日は記録しよう'}</h2></div>
+      ${ifthenBlock(p)}
+      <div class="cta">
+        <button class="btn pri" id="logFull"><span class="e">✓</span>やった！<small>プランどおり</small></button>
+        <button class="btn soft" id="logMini"><span class="e">🌱</span>ミニ版<small>少しだけやった</small></button>
+      </div>
+      <div class="links"><button class="btn ghost sm" id="logRest">今日は休む</button><button class="btn ghost sm" id="hard">やる気が出ない…</button></div></div>`;
+  }
+  const adv=progressionAdvice(),wsKey=ymd(weekStart(d));
+  if(adv&&S.lastProgressCheck!==wsKey){
+    h+=`<div class="card"><div class="sec-title"><span class="ic">${adv.kind==='up'?'📈':adv.kind==='down'?'🪜':'⏸️'}</span><h2>目標の調整提案</h2></div><p>${esc(adv.msg)}</p>
+    <div style="display:flex;gap:8px;margin-top:10px">${adv.next?`<button class="btn pri sm" id="advYes">週${adv.next}分にする</button><button class="btn sm" id="advNo">今のまま</button>`:`<button class="btn sm" id="advNo">わかった</button>`}</div></div>`;
+  }
+  const lastRev=S.reviews.length?S.reviews[S.reviews.length-1].date:null;
+  const since=lastRev?(Date.now()-parse(lastRev))/864e5:99;
+  if(Object.keys(S.logs).length>=2&&since>=5&&(d.getDay()===0||d.getDay()===6||since>=7)){
+    h+=`<div class="card"><div class="sec-title"><span class="ic">📝</span><h2>週のふり返り</h2></div><p class="muted">3分で、うまくいったこと・つまずいたことを整理して来週のプランを調整します。</p><button class="btn pri" id="review" style="margin-top:6px">ふり返りをする</button></div>`;
+  }
+  if(S.profile.why||S.profile.values.length){
+    h+=`<div class="card"><div class="sec-title"><span class="ic">💚</span><h2>わたしが動く理由</h2></div>${S.profile.why?`<p class="round" style="font-size:17px;font-weight:700">「${esc(S.profile.why)}」</p>`:''}<div class="chips" style="margin-top:6px">${S.profile.values.map(v=>`<span class="pill">${esc(v)}</span>`).join('')}</div></div>`;
+  }
+  h+=`<div class="card"><div class="sec-title"><span class="ic">🩺</span><h2>安全のために</h2></div>
+    <p class="small">次の症状が出たら<b>すぐ中止</b>し、続く場合は医療者へ：${RED_FLAGS.join('・')}</p>
+    <p class="small muted">きつさの目安：中強度＝「ややきつい」（10段階で5〜6）・会話はできるが歌えない程度。${hiitAllowed()?'HIITは十分なウォームアップ後に。':'HIITは医療者の許可を記録すると使えます。'}</p></div>`;
+  $('#app').innerHTML=h;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{const a=$('#ringArc');a&&(a.style.strokeDashoffset=C*(1-pct))}));
+  const on=(id,f)=>{const e=$('#'+id);e&&(e.onclick=f)};
+  on('logFull',()=>logSheet('full'));on('logMini',()=>logSheet('mini'));
+  on('edit',()=>logSheet(l.status==='rest'?'full':l.status));
+  on('logRest',()=>{S.logs[t]={status:'rest',min:0,date:t};save();toast('休養日として記録しました');render()});
+  on('hard',hardDay);on('review',reviewSheet);on('nOn',()=>notifOffer());on('inst',installApp);on('instX',()=>{S.installDismissed=true;save();render()});
+  on('advYes',()=>{S.plan.weeklyGoal=adv.next;S.lastProgressCheck=wsKey;save();toast(`週${adv.next}分に更新しました`);render()});
+  on('advNo',()=>{S.lastProgressCheck=wsKey;save();render()});
+}
+
+function logSheet(status){
+  const t=todayStr(),p=S.plan,ex=S.logs[t]&&S.logs[t].status!=='rest'?S.logs[t]:null;
+  const L=Object.assign({status,min:status==='mini'?Math.min(5,p.minutes):p.minutes,type:p.type,rpe:null,moodBefore:null,moodAfter:null,flags:[],note:'',strength:false},ex||{},{status});
+  const types=EX_TYPES.filter(x=>!x.hiit||hiitAllowed()||L.type==='hiit');
+  modal(`<h2>${status==='full'?'おつかれさま！記録しよう':'ミニ版を記録'}</h2>
+    <div class="chips" id="st"><button type="button" class="chip ${L.status==='full'?'on':''}" data-s="full">✓ プランどおり</button><button type="button" class="chip ${L.status==='mini'?'on':''}" data-s="mini">🌱 ミニ版</button></div>
+    <div class="row"><div><label>種類</label><select id="ltype">${types.map(x=>`<option value="${x.id}" ${L.type===x.id?'selected':''}>${x.e} ${x.n}</option>`).join('')}</select></div>
+    <div style="max-width:110px"><label>時間（分）</label><input type="number" id="lmin" min="0" max="300" value="${L.min}"></div></div>
+    <label class="check" style="margin-top:10px"><input type="checkbox" id="lstr" ${L.strength?'checked':''}>筋トレも含んだ</label>
+    <label>きつさ（RPE 0〜10）</label>${scale('rpe',L.rpe,0,10,'安静','限界')}
+    <div class="row"><div><label>運動前の気分</label>${scale('moodBefore',L.moodBefore,1,5,'😞','😄')}</div>
+    <div><label>運動後の気分</label>${scale('moodAfter',L.moodAfter,1,5,'😞','😄')}</div></div>
+    <label>気になった症状（あれば）</label>
+    <div class="chips" id="flags">${RED_FLAGS.map(f=>`<button type="button" class="chip ${L.flags.includes(f)?'on':''}">${f}</button>`).join('')}</div>
+    <div id="flagMsg"></div>
+    <label>ひとことメモ（うまくいったコツなど）</label><input type="text" id="lnote" value="${esc(L.note)}" placeholder="例：靴を玄関に出しておいたら楽に出られた">
+    <button class="btn pri block" id="saveLog" style="margin-top:16px;padding:15px">保存</button>`,
+  (sh,close)=>{
+    bindScales(sh,L);
+    sh.querySelector('#st').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;sh.querySelectorAll('#st .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');L.status=b.dataset.s};
+    const fm=()=>{sh.querySelector('#flagMsg').innerHTML=L.flags.length?`<div class="note bad">これらの症状があるときは運動を中止して休んでください。治まらない・強い場合は医療者に連絡を。胸の痛みや失神しそうな場合は救急要請を検討してください。</div>`:''};
+    sh.querySelector('#flags').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;b.classList.toggle('on');const v=b.textContent;L.flags=b.classList.contains('on')?[...L.flags,v]:L.flags.filter(x=>x!==v);fm()};fm();
+    sh.querySelector('#saveLog').onclick=()=>{
+      L.type=sh.querySelector('#ltype').value;L.min=Math.max(0,Number(sh.querySelector('#lmin').value)||0);
+      L.strength=sh.querySelector('#lstr').checked||L.type==='strength';L.note=sh.querySelector('#lnote').value.trim();L.date=t;
+      const first=!doneOf(t);S.logs[t]=L;
+      if(L.note&&!S.wins.some(w=>w.date===t&&w.text===L.note))S.wins.push({date:t,text:L.note});
+      save();close();
+      const c=chain().count;
+      if(first){confetti();toast(c>1?`記録しました。連続${c}回目！`:'記録しました。最初の一歩です！')}else toast('更新しました');
+      if(first&&[7,14,30,50,66,100].includes(c))setTimeout(()=>modal(`<div class="done"><div class="badge">🏅</div><h2>連続${c}回達成</h2><p>${c>=66?'研究では、習慣の自動化にかかる日数の中央値は約66日と報告されています。ここまで来たあなたの行動は、かなり「自分の一部」になっています。':'積み重ねが、きっかけと行動の結びつきを強くしています。'}</p><button class="btn pri" onclick="this.closest('.modal').remove()">ありがとう</button></div>`),700);
+      render();
+    };
+  });
+}
+
+function hardDay(){
+  const p=S.plan;
+  modal(`<h2>やる気が出ない日のために</h2>
+   <p class="muted">やる気は「動いたあと」についてくることが多いものです。</p>
+   ${S.profile.why?`<div class="note"><span class="small muted">あなたの理由</span><br><b class="round" style="font-size:16px">「${esc(S.profile.why)}」</b></div>`:''}
+   <h3>① ハードルを下げる</h3><p>今日は <b>${esc(p.mini)}</b> だけで100点。始めて、続けたくなったら続ければOK。</p>
+   <h3>② 決めておいた対処プラン</h3>
+   ${p.coping.length?p.coping.map(c=>`<div class="ifthen compact"><span class="k">IF</span><span class="v">${esc(c.barrier)}</span><span class="k then">THEN</span><span class="v" style="font-weight:500">${esc(c.plan)}</span></div>`).join(''):'<p class="muted">プランタブで追加できます。</p>'}
+   <h3>③ 過去の自分から</h3>
+   ${S.wins.length?S.wins.slice(-3).reverse().map(w=>`<div class="note small" style="margin:6px 0">${esc(w.date.slice(5).replace('-','/'))}：${esc(w.text)}</div>`).join(''):'<p class="muted small">記録のメモが、ここに「成功のコツ」として表示されます。</p>'}
+   <div class="cta"><button class="btn pri" id="goMini"><span class="e">🌱</span>ミニ版をやる</button><button class="btn" id="rest"><span class="e">🛌</span>今日は休む</button></div>
+   <p class="muted small" style="margin-top:10px">体調がすぐれない・症状がある日は、休むことが正しい選択です。</p>`,
+  (sh,close)=>{sh.querySelector('#goMini').onclick=()=>{close();logSheet('mini')};
+    sh.querySelector('#rest').onclick=()=>{S.logs[todayStr()]={status:'rest',min:0,date:todayStr()};save();close();render()}});
+}
+
+function reviewSheet(){
+  const ws=weekStart(new Date()),cur=weekStats(ws),prev=weekStats(addDays(ws,-7));
+  const R={date:todayStr(),good:'',barrier:[],confidence:S.profile.confidence};
+  modal(`<h2>週のふり返り</h2>
+   <div class="stat"><div><b>${prev.min}</b><span>先週（分）</span></div><div><b>${cur.min}</b><span>今週（分）</span></div><div><b>${S.plan.weeklyGoal}</b><span>週目標</span></div></div>
+   <label>うまくいったこと・役に立った工夫</label><textarea id="good"></textarea>
+   <label>つまずいた理由（あれば）</label>
+   <div class="chips" id="bar">${BARRIERS.map(b=>`<button type="button" class="chip">${b}</button>`).join('')}</div>
+   <div id="barPlans"></div>
+   <label>来週、計画をやりとげる自信は？</label>${scale('confidence',R.confidence,0,10,'全くない','完全にある')}
+   <div id="cMsg"></div>
+   <button class="btn pri block" id="saveRev" style="margin-top:16px;padding:15px">保存して来週へ</button>`,
+  (sh,close)=>{
+    const cm=()=>{sh.querySelector('#cMsg').innerHTML=R.confidence<7?'<div class="note warn">自信が7未満なら、来週の目標や1回の時間を小さくしましょう（プランタブで変更できます）。</div>':''};
+    bindScales(sh,new Proxy(R,{set:(o,k,v)=>{o[k]=v;cm();return true}}));cm();
+    const bp=()=>{sh.querySelector('#barPlans').innerHTML=R.barrier.map(b=>{const ex=S.plan.coping.find(c=>c.barrier===b);return`<label>もし「${esc(b)}」なら →</label><input type="text" data-b="${esc(b)}" value="${esc(ex?ex.plan:COPING_SUGGEST[b])}">`}).join('')};
+    sh.querySelector('#bar').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;b.classList.toggle('on');const v=b.textContent;R.barrier=b.classList.contains('on')?[...R.barrier,v]:R.barrier.filter(x=>x!==v);bp()};
+    sh.querySelector('#saveRev').onclick=()=>{
+      R.good=sh.querySelector('#good').value.trim();
+      sh.querySelectorAll('[data-b]').forEach(i=>{const b=i.dataset.b,pl=i.value.trim();const ex=S.plan.coping.find(c=>c.barrier===b);if(ex)ex.plan=pl;else S.plan.coping.push({barrier:b,plan:pl})});
+      if(R.good)S.wins.push({date:R.date,text:R.good});
+      S.profile.confidence=R.confidence;R.min=cur.min;S.reviews.push(R);save();close();
+      toast('ふり返りを保存しました');
+      if(!S.srbai.length||(Date.now()-parse(S.srbai[S.srbai.length-1].date))/864e5>=6)setTimeout(srbaiSheet,500);else render();
+    };
+  });
+}
+
+/* =========================================================
+   記録（フィードバック）
+   ========================================================= */
+function renderProgress(){
+  const now=new Date(),ws=weekStart(now);
+  const weeks=[];for(let i=7;i>=0;i--){const s=addDays(ws,-7*i);weeks.push({s,...weekStats(s)})}
+  const goal=S.plan.weeklyGoal,maxV=Math.max(goal*1.25,...weeks.map(w=>w.min),10);
+  const W=520,H=190,pl=30,pb=24,bw=(W-pl)/8;
+  const y=v=>H-pb-(v/maxV)*(H-pb-16);
+  let svg=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="週ごとの運動時間"><defs><linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--brand2)"/><stop offset="1" stop-color="var(--brand)"/></linearGradient></defs>`;
+  weeks.forEach((w,i)=>{const x=pl+i*bw+bw*.2,bh=H-pb-y(w.min),cur=i===7;
+    svg+=`<rect x="${x}" y="${y(w.min)}" width="${bw*.6}" height="${Math.max(0,bh)}" rx="7" fill="${w.min>=goal?'url(#bg1)':'var(--mini)'}" opacity="${cur?1:.92}"><title>${w.min}分</title></rect>`;
+    svg+=`<text x="${x+bw*.3}" y="${H-7}" text-anchor="middle" style="${cur?'font-weight:700;fill:var(--ink)':''}">${cur?'今週':`${w.s.getMonth()+1}/${w.s.getDate()}`}</text>`;
+    if(w.min)svg+=`<text x="${x+bw*.3}" y="${y(w.min)-5}" text-anchor="middle" style="font-weight:700;fill:var(--ink)">${w.min}</text>`;});
+  svg+=`<line x1="${pl}" x2="${W}" y1="${y(goal)}" y2="${y(goal)}" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${pl-3}" y="${y(goal)+3}" text-anchor="end" style="fill:var(--warn);font-weight:700">目標</text></svg>`;
+  let heat=`<div class="heat">${['月','火','水','木','金','土','日'].map(d=>`<div class="wd">${d}</div>`).join('')}`;
+  const hs=addDays(ws,-7*11);
+  for(let i=0;i<84;i++){const d=addDays(hs,i),s=ymd(d),l=S.logs[s];
+    let c='';if(l&&l.status==='full')c='full';else if(l&&l.status==='mini')c='mini';else if(!isPlanned(d))c='rest';
+    const out=d>now||d<parse(S.created);if(out&&!l)c='rest';
+    heat+=`<div class="${c} ${s===todayStr()?'today':''}" title="${s}" style="${out?'opacity:.3':''}">${d.getDate()}</div>`}
+  heat+='</div>';
+  const moods=Object.values(S.logs).filter(l=>l.moodBefore&&l.moodAfter);
+  const up=moods.filter(l=>l.moodAfter>l.moodBefore).length;
+  const avgDelta=moods.length?(moods.reduce((a,l)=>a+(l.moodAfter-l.moodBefore),0)/moods.length):0;
+  const tot=Object.values(S.logs).filter(l=>l.status==='full'||l.status==='mini');
+  const totalMin=tot.reduce((a,l)=>a+(Number(l.min)||0),0);
+  const ch=chain();
+  let pd=0,pdDone=0;for(let i=1;i<=28;i++){const d=addDays(now,-i);if(d<parse(S.created))break;if(isPlanned(d)){pd++;if(doneOf(ymd(d)))pdDone++}}
+  const rate=pd?Math.round(pdDone/pd*100):null;
+  let h=`<div class="card"><div class="sec-title"><span class="ic">🏔️</span><h2>これまでの積み重ね</h2></div><div class="stat">
+    <div><b>${tot.length}</b><span>実施回数</span></div><div><b>${totalMin}</b><span>合計（分）</span></div><div><b>${rate===null?'—':rate+'%'}</b><span>予定日の実施率</span></div></div>
+    ${ch.forgiven?`<p class="muted small" style="margin-top:10px">連続${ch.count}回のうち、単発のお休み${ch.forgiven}回は「2回続けて休まない」ルールで許容されています。</p>`:''}</div>
+  <div class="card"><div class="sec-title"><span class="ic">📊</span><h2>週ごとの運動時間</h2></div>${svg}<p class="muted small">濃い緑＝目標達成。目標は達成状況に合わせて調整されます（開始時 週${S.plan.startGoal}分 → 現在 週${goal}分）。</p></div>
+  <div class="card"><div class="sec-title"><span class="ic">🗓️</span><h2>12週間カレンダー</h2></div>${heat}<div class="legend"><span><i style="background:var(--brand)"></i>プランどおり</span><span><i style="background:var(--mini)"></i>ミニ版</span><span><i style="background:var(--empty)"></i>予定日・未実施</span><span><i style="border:1.5px dashed var(--line)"></i>予定外</span></div></div>`;
+  if(moods.length)h+=`<div class="card"><div class="sec-title"><span class="ic">😊</span><h2>運動と気分</h2></div><p>気分を記録した${moods.length}回のうち <b>${up}回</b> で、運動後に気分が上がりました（平均 ${avgDelta>=0?'+':''}${avgDelta.toFixed(1)}）。</p><p class="muted small">運動の「すぐ得られるごほうび」に気づくことが、続ける力になります。</p></div>`;
+  if(S.wins.length)h+=`<div class="card"><div class="sec-title"><span class="ic">💡</span><h2>成功のコツ集</h2></div>${S.wins.slice(-8).reverse().map(w=>`<div class="note small" style="margin:6px 0"><b>${esc(w.date.slice(5).replace('-','/'))}</b>　${esc(w.text)}</div>`).join('')}</div>`;
+  $('#app').innerHTML=h;
+}
+
+/* =========================================================
+   プラン
+   ========================================================= */
+function renderPlan(){
+  const p=S.plan;
+  const low=Object.entries(S.comb).sort((a,b)=>a[1]-b[1])[0];
+  const combTip={cap:'能力が課題：まずはやり方が簡単なメニュー（歩く・椅子スクワット）から。動画や専門職の指導も有効です。',opp:'機会が課題：きっかけを「必ず毎日ある場面」に結びつけ、道具をきっかけの場所に置きましょう。',mot:'動機が課題：「なぜ」を毎日目にし、運動後の気分の変化を記録して、すぐ得られるごほうびに気づきましょう。'}[low[0]];
+  let h=`<div class="card"><div class="sec-title"><span class="ic">🔗</span><h2>if-then プラン</h2></div>
+    <p class="muted small">「いつ・どこで・何を」を前もって決めると、実行率が大きく高まります（実行意図）。</p>
+    <ul class="list">${p.ifthen.map((x,i)=>`<li><div class="ifthen compact" style="flex:1;margin:0"><span class="k">IF</span><span class="v">${esc(x.if)}</span><span class="k then">THEN</span><span class="v">${esc(x.then)}</span></div><button class="x" data-del-it="${i}" aria-label="削除">✕</button></li>`).join('')}</ul>
+    <div class="row" style="margin-top:8px"><input type="text" id="itIf" placeholder="もし（きっかけ）"><input type="text" id="itThen" placeholder="なら（行動）"></div>
+    <button class="btn sm soft" id="addIt" style="margin-top:8px">＋ 追加</button></div>
+  <div class="card"><div class="sec-title"><span class="ic">🛡️</span><h2>つまずき対処プラン</h2></div>
+    <p class="muted small">障害を先回りして「そのときどうするか」を決めておきます。</p>
+    <ul class="list">${p.coping.map((x,i)=>`<li><div class="ifthen compact" style="flex:1;margin:0"><span class="k">IF</span><span class="v">${esc(x.barrier)}</span><span class="k then">THEN</span><span class="v" style="font-weight:500">${esc(x.plan)}</span></div><button class="x" data-del-cp="${i}" aria-label="削除">✕</button></li>`).join('')}</ul>
+    <select id="cpB" style="margin-top:8px"><option value="">障害を選ぶ</option>${BARRIERS.map(b=>`<option>${b}</option>`).join('')}</select>
+    <input type="text" id="cpP" placeholder="そのときの対処" style="margin-top:8px">
+    <button class="btn sm soft" id="addCp" style="margin-top:8px">＋ 追加</button></div>
+  <div class="card"><div class="sec-title"><span class="ic">🧭</span><h2>基本プラン</h2></div>
+    <label>きっかけ</label><input type="text" id="pAnchor" value="${esc(p.anchor)}">
+    <div class="row"><div><label>運動</label><select id="pType">${EX_TYPES.filter(t=>!t.hiit||hiitAllowed()).map(t=>`<option value="${t.id}" ${p.type===t.id?'selected':''}>${t.e} ${t.n}</option>`).join('')}</select></div>
+    <div style="max-width:110px"><label>時間（分）</label><input type="number" id="pMin" value="${p.minutes}"></div></div>
+    <label>ミニ版</label><input type="text" id="pMini" value="${esc(p.mini)}">
+    <div class="row"><div><label>場所</label><input type="text" id="pPlace" value="${esc(p.place)}"></div><div style="max-width:150px"><label>時刻</label><input type="time" id="pTime" value="${esc(p.time)}"></div></div>
+    <label>曜日</label><div class="chips days" id="pDays">${DOW.map((d,i)=>`<button type="button" class="chip ${p.days.includes(i)?'on':''}" data-d="${i}">${d}</button>`).join('')}</div>
+    <div class="row"><div><label>週の目標（分）</label><input type="number" id="pGoal" value="${p.weeklyGoal}"></div><div><label>週の筋トレ回数</label><input type="number" id="pStr" min="0" max="7" value="${p.strengthDays}"></div></div>
+    <p class="muted small">きっかけや場所は<b>できるだけ変えない</b>のがコツ。同じ状況での繰り返しが自動化を生みます。</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn pri" id="savePlan">プランを保存</button><button class="btn" id="ics">📅 カレンダーに登録</button></div></div>
+  <div class="card"><div class="sec-title"><span class="ic">🧩</span><h2>あなたに合わせたヒント</h2></div>
+    <div class="stat"><div><b>${S.comb.cap}</b><span>能力</span></div><div><b>${S.comb.opp}</b><span>機会</span></div><div><b>${S.comb.mot}</b><span>動機</span></div></div>
+    <div class="note">${combTip}</div><button class="btn sm" id="recomb">COM-Bを再評価</button></div>
+  ${menuCard()}`;
+  $('#app').innerHTML=h;
+  document.querySelectorAll('[data-del-it]').forEach(b=>b.onclick=()=>{p.ifthen.splice(+b.dataset.delIt,1);save();render()});
+  document.querySelectorAll('[data-del-cp]').forEach(b=>b.onclick=()=>{p.coping.splice(+b.dataset.delCp,1);save();render()});
+  $('#addIt').onclick=()=>{const a=$('#itIf').value.trim(),b=$('#itThen').value.trim();if(!a||!b){toast('両方入力してください');return}p.ifthen.push({if:a,then:b});save();render()};
+  $('#cpB').onchange=()=>{if(!$('#cpP').value)$('#cpP').value=COPING_SUGGEST[$('#cpB').value]||''};
+  $('#addCp').onclick=()=>{const a=$('#cpB').value,b=$('#cpP').value.trim();if(!a||!b){toast('障害と対処を入力してください');return}p.coping.push({barrier:a,plan:b});save();render()};
+  $('#pDays').onclick=e=>{const b=e.target.closest('.chip');b&&b.classList.toggle('on')};
+  $('#savePlan').onclick=()=>{
+    const days=[...$('#pDays').querySelectorAll('.chip.on')].map(b=>+b.dataset.d);if(!days.length){toast('曜日を1つ以上');return}
+    const oldAnchor=p.anchor,oldTime=p.time;
+    Object.assign(p,{anchor:$('#pAnchor').value.trim()||p.anchor,type:$('#pType').value,minutes:Math.max(1,+$('#pMin').value||p.minutes),mini:$('#pMini').value.trim()||p.mini,place:$('#pPlace').value.trim(),time:$('#pTime').value,days:days.sort(),weeklyGoal:Math.max(5,+$('#pGoal').value||p.weeklyGoal),strengthDays:Math.max(0,+$('#pStr').value||0)});
+    p.behavior=exOf(p.type).n;
+    if(p.ifthen[0]&&p.ifthen[0].if===oldAnchor)p.ifthen[0]={if:p.anchor,then:`${p.behavior}を${p.minutes}分する`};
+    if(!S.notif.cueTime||S.notif.cueTime===oldTime)S.notif.cueTime=p.time;
+    save();scheduleLocal();toast('保存しました');render()};
+  $('#ics').onclick=downloadICS;
+  $('#recomb').onclick=()=>modal(`<h2>COM-Bの再評価</h2><label>💡 能力</label>${scale('cap',S.comb.cap,0,10,'低い','高い')}<label>🗓️ 機会</label>${scale('opp',S.comb.opp,0,10,'低い','高い')}<label>🔥 動機</label>${scale('mot',S.comb.mot,0,10,'低い','高い')}<button class="btn pri block" id="ok" style="margin-top:16px">保存</button>`,(sh,close)=>{bindScales(sh,S.comb);sh.querySelector('#ok').onclick=()=>{save();close();render()}});
+}
+function menuCard(){
+  return `<div class="card"><div class="sec-title"><span class="ic">🏋️</span><h2>メニュー例</h2></div>
+   <h3>🚶 有酸素（中強度：ややきつい・会話はできる）</h3><p class="small">早歩き・自転車・水中ウォーク。10分×3回に分けても効果があります。</p>
+   <h3>💪 筋トレ（週2回・大きな筋肉）</h3><p class="small">椅子スクワット／壁腕立て／かかと上げ／ゴムバンドでのローイング。各10〜15回×1〜3セット、反動をつけずゆっくり。リンパ浮腫がある方は軽い負荷から段階的に、可能ならスリーブ着用で。</p>
+   ${hiitAllowed()?`<h3>⚡ HIIT（医療者の許可あり・慣れてから）</h3><p class="small">例：ウォームアップ5分 →「1分ややきつい〜きつい（RPE 7〜8）＋2分ゆっくり」×4〜6本 → クールダウン5分。週1〜2回から。体調不良・治療直後の日は中強度に切り替え。</p>`:`<p class="muted small">HIITは、安全チェックで該当項目がある場合、設定で医療者の許可を記録すると表示されます。</p>`}
+   <h3>🦴 骨転移・骨粗しょう症がある方</h3><p class="small">ひねり・前屈・衝撃（ジャンプ）を避け、転倒予防のバランス練習を。専門職に相談を。</p></div>`;
+}
+function downloadICS(){
+  const p=S.plan,map=['SU','MO','TU','WE','TH','FR','SA'];
+  const [hh,mm]=(p.time||'08:00').split(':').map(Number);const d=new Date();
+  const f=x=>`${x.getFullYear()}${pad(x.getMonth()+1)}${pad(x.getDate())}T${pad(x.getHours())}${pad(x.getMinutes())}00`;
+  const st=new Date(d.getFullYear(),d.getMonth(),d.getDate(),hh,mm),en=new Date(st.getTime()+Math.max(5,p.minutes)*60000);
+  const txt=s=>s.replace(/[,;\\]/g,m=>'\\'+m).replace(/\n/g,'\\n');
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//ugoku-habit//JP','BEGIN:VEVENT',`UID:${Date.now()}@ugoku-habit`,`DTSTAMP:${f(d)}`,`DTSTART:${f(st)}`,`DTEND:${f(en)}`,
+    `RRULE:FREQ=WEEKLY;BYDAY=${p.days.map(i=>map[i]).join(',')}`,`SUMMARY:${txt(exOf(p.type).e+' '+p.behavior+' '+p.minutes+'分')}`,
+    `DESCRIPTION:${txt(`もし「${p.anchor}」なら${p.behavior}を${p.minutes}分。\nしんどい日はミニ版：${p.mini}`)}`,p.place?`LOCATION:${txt(p.place)}`:'',
+    'BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:運動の時間です','END:VALARM','END:VEVENT','END:VCALENDAR'].filter(Boolean).join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='exercise-habit.ics';a.click();
+  toast('カレンダーファイルを作成しました');
+}
+
+/* =========================================================
+   習慣度（SRBAI）
+   ========================================================= */
+function srbaiSheet(){
+  const v=[null,null,null,null];
+  modal(`<h2>習慣度チェック</h2><p class="muted small">「運動すること」は、私にとって…<br>1＝全くそう思わない 〜 7＝とてもそう思う</p>
+    ${SRBAI.map((q,i)=>`<label>${i+1}. ${q}</label>${scale('q'+i,null,1,7,'全く','とても')}`).join('')}
+    <button class="btn pri block" id="ok" style="margin-top:16px;padding:15px">保存</button>`,(sh,close)=>{
+    bindScales(sh,new Proxy({},{set:(o,k,val)=>{v[+k.slice(1)]=val;return true}}));
+    sh.querySelector('#ok').onclick=()=>{if(v.some(x=>x==null)){toast('4問すべてに回答してください');return}
+      const mean=v.reduce((a,b)=>a+b,0)/4;S.srbai.push({date:todayStr(),items:v,mean:+mean.toFixed(2)});save();close();toast(`習慣度 ${mean.toFixed(1)} / 7`);render()};
+  });
+}
+function renderHabit(){
+  const ph=phase(),sr=S.srbai;
+  const order=['開始期','形成期','維持期'],idx=order.indexOf(ph.n);
+  let h=`<div class="card"><div class="sec-title"><span class="ic">${ph.e}</span><h2>いまの段階：${ph.n}</h2></div>
+   <div style="display:flex;gap:6px;margin:4px 0 10px">${order.map((o,i)=>`<div style="flex:1;text-align:center"><div class="bar" style="height:8px"><i style="width:${i<=idx?100:0}%"></i></div><span class="small ${i===idx?'':'muted'}" style="${i===idx?'font-weight:700;color:var(--brand)':''}">${o}</span></div>`).join('')}</div>
+   <p>${ph.d}</p></div>
+  <div class="card"><div class="sec-title"><span class="ic">📈</span><h2>習慣度（自動性）の推移</h2></div>`;
+  if(sr.length){
+    const W=520,H=180,pl=26,pb=24,n=sr.length;
+    const x=i=>pl+(n===1?(W-pl)/2:(i/(n-1))*(W-pl-16)+8),y=v=>H-pb-((v-1)/6)*(H-pb-12);
+    let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="習慣度の推移"><defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--brand2)" stop-opacity=".35"/><stop offset="1" stop-color="var(--brand2)" stop-opacity="0"/></linearGradient></defs>`;
+    [1,4,7].forEach(v=>s+=`<line x1="${pl}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${pl-6}" y="${y(v)+3}" text-anchor="end">${v}</text>`);
+    const pts=sr.map((r,i)=>`${x(i)},${y(r.mean)}`).join(' ');
+    if(n>1)s+=`<polygon fill="url(#ag)" points="${x(0)},${y(1)} ${pts} ${x(n-1)},${y(1)}"/>`;
+    s+=`<polyline fill="none" stroke="var(--brand)" stroke-width="3" stroke-linejoin="round" points="${pts}"/>`;
+    sr.forEach((r,i)=>{s+=`<circle cx="${x(i)}" cy="${y(r.mean)}" r="5" fill="var(--surface)" stroke="var(--brand)" stroke-width="2.5"><title>${r.date}: ${r.mean}</title></circle>`;
+      if(n<=10||i%Math.ceil(n/8)===0)s+=`<text x="${x(i)}" y="${H-7}" text-anchor="middle">${r.date.slice(5).replace('-','/')}</text>`});
+    s+='</svg>';
+    h+=s+`<p class="muted small">最新：<b style="color:var(--brand)">${sr[n-1].mean} / 7</b>。自動性は最初に速く伸び、その後ゆるやかに頭打ちになる曲線を描くのが普通です。</p>`;
+  }else h+=`<p class="muted">まだ記録がありません。週に1回、4つの質問に答えると「意識せずに動けている度合い」の変化がわかります。</p>`;
+  h+=`<button class="btn pri" id="srb" style="margin-top:8px">今週のチェックをする</button></div>
+  <div class="card"><div class="sec-title"><span class="ic">🌱</span><h2>習慣が育つしくみ</h2></div>
+   <div class="ifthen compact" style="grid-template-columns:auto 1fr"><span class="k">1</span><span class="v" style="font-weight:500"><b>きっかけを固定する</b>：同じ時間・場所・前後の行動で</span></div>
+   <div class="ifthen compact" style="grid-template-columns:auto 1fr"><span class="k">2</span><span class="v" style="font-weight:500"><b>小さく始める</b>：確実にできる量が最も速く習慣を育てる</span></div>
+   <div class="ifthen compact" style="grid-template-columns:auto 1fr"><span class="k">3</span><span class="v" style="font-weight:500"><b>1回の休みは気にしない</b>：大事なのは2回続けて休まないこと</span></div>
+   <div class="ifthen compact" style="grid-template-columns:auto 1fr"><span class="k">4</span><span class="v" style="font-weight:500"><b>すぐのごほうびに気づく</b>：運動後の気分・眠り・達成感を記録</span></div>
+   <div class="ifthen compact" style="grid-template-columns:auto 1fr"><span class="k">5</span><span class="v" style="font-weight:500"><b>崩れたら立て直す</b>：入院や旅行で途切れてもミニ版から再開</span></div></div>
+  <div class="card"><div class="sec-title"><span class="ic">🔄</span><h2>途切れたときの再スタート</h2></div><p class="small">しばらく休んでしまったら、週目標を半分にして、最初の1週間はミニ版でOKにしましょう。休む原因になったことには対処プランを。</p>
+   <button class="btn sm soft" id="restart" style="margin-top:6px">ミニ版で再スタートする</button></div>`;
+  $('#app').innerHTML=h;
+  $('#srb').onclick=srbaiSheet;
+  $('#restart').onclick=()=>{S.plan.weeklyGoal=Math.max(10,Math.round(S.plan.weeklyGoal*0.5/5)*5);save();toast(`週目標を${S.plan.weeklyGoal}分に下げて再スタートします`);go('today')};
+}
+
+/* =========================================================
+   通知・インストール
+   - サーバーあり（Cloudflare に公開時）：Web Push で、アプリを閉じていても時刻どおりに届く
+   - サーバーなし：アプリを開いている間のタイマー＋（対応環境のみ）定期バックグラウンド確認
+   - 通知の「やった！」「ミニ版」ボタンは、アプリを開かずに記録できる
+   ========================================================= */
+// 通知サーバーのURL。空なら同じサイトの /api を使う（Cloudflare版）。
+// GitHub Pages で使う場合は、Cloudflare に公開した通知サーバーのURL（例 https://ugoku-habit.xxx.workers.dev/）を入れる。
+const PUSH_API='';
+const API=p=>(PUSH_API?PUSH_API.replace(/\/?$/,'/'):'')+'api/'+p;
+let swReg=null,timers=[],SERVER=null,installEvt=null,pushTimer=null;
+const swOK=()=>'serviceWorker' in navigator&&location.protocol.startsWith('http');
+const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const TZ=(()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'Asia/Tokyo'}catch(e){return'Asia/Tokyo'}})();
+const pushOn=()=>!!(SERVER&&S.notif.enabled&&S.notif.endpoint);
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;if(S.onboarded&&tab==='today'&&!document.querySelector('.modal'))render()});
+window.addEventListener('appinstalled',()=>{installEvt=null;toast('ホーム画面に追加しました')});
+
+async function registerSW(){
+  if(!swOK())return;
+  try{swReg=await navigator.serviceWorker.register('sw.js');
+    navigator.serviceWorker.addEventListener('message',e=>{const d=e.data||{};if(d.do)handleAction(d.do);if(d.pending)applyPending()});
+  }catch(e){console.warn('SW登録に失敗',e)}
+  try{const r=await fetch(API('vapid'),{cache:'no-store'});if(r.ok){const j=await r.json();if(j.publicKey&&j.publicKey.length>60)SERVER=j}}catch(e){}
+}
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('ugoku',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function idbGet(k){try{const d=await idb();return await new Promise(res=>{const q=d.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>res(null)})}catch(e){return null}}
+async function idbPut(k,v){try{const d=await idb();await new Promise(res=>{const tx=d.transaction('kv','readwrite');tx.objectStore('kv').put(v,k);tx.oncomplete=res;tx.onerror=res})}catch(e){}}
+// 通知ボタンから記録された分をアプリに反映
+async function applyPending(){
+  const pend=await idbGet('pending');if(!pend||!pend.length)return;
+  let n=0;pend.forEach(p=>{if(!doneOf(p.date)){S.logs[p.date]={status:p.status,min:p.min,type:p.type,date:p.date,via:'notification',rpe:null,moodBefore:null,moodAfter:null,flags:[],note:''};n++}});
+  await idbPut('pending',[]);
+  if(n){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}syncSchedule();toast(`通知から記録した${n}回分を反映しました`);if(!document.querySelector('.modal'))render()}
+}
+function schedulePayload(){
+  const p=S.plan,n=S.notif;
+  const lastDone=Object.keys(S.logs).filter(doneOf).sort().pop()||'';
+  const lastRest=Object.keys(S.logs).filter(k=>S.logs[k].status==='rest').sort().pop()||'';
+  return{tz:TZ,days:p.days,cue:n.cue,cueTime:n.cueTime||p.time,nudge:n.nudge,nudgeTime:n.nudgeTime,review:n.review,
+    anchor:p.anchor,behavior:p.behavior,minutes:p.minutes,mini:p.mini,type:p.type,lastDone,lastRest};
+}
+function syncSchedule(){
+  if(!window.indexedDB)return;
+  const n=S.notif,perm='Notification' in window?Notification.permission:'denied';
+  idbPut('sched',{...schedulePayload(),enabled:n.enabled&&perm==='granted',server:pushOn(),endpoint:n.endpoint||'',api:API('done')});
+  if(pushOn()){clearTimeout(pushTimer);pushTimer=setTimeout(pushSync,800)}
+}
+async function pushSync(){
+  try{const sub=swReg&&await swReg.pushManager.getSubscription();if(!sub)return;
+    await fetch(API('subscribe'),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({subscription:sub.toJSON(),schedule:schedulePayload()})});
+  }catch(e){}
+}
+async function notify(title,body,tag){
+  if(!('Notification' in window)||Notification.permission!=='granted')return false;
+  const opt={body,tag:'ugoku-'+tag,renotify:true,icon:'icon-192.png',badge:'icon-192.png'};
+  try{
+    if(swReg){await swReg.showNotification(title,{...opt,actions:tag==='cue'||tag==='nudge'?[{action:'full',title:'✓ やった！'},{action:'mini',title:'🌱 ミニ版'}]:[],data:{kind:tag,date:todayStr()}});return true}
+    const nt=new Notification(title,opt);nt.onclick=()=>{window.focus();nt.close()};return true;
+  }catch(e){console.warn(e);return false}
+}
+// サーバーがない場合：アプリ（タブ）が開いている間は時刻ちょうどに通知
+function scheduleLocal(){
+  timers.forEach(clearTimeout);timers=[];
+  const n=S.notif,p=S.plan;if(!n.enabled||pushOn())return;
+  const now=new Date(),m=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+  const add=(time,fn)=>{if(!time)return;const diff=(toMin(time)-m)*60000;if(diff>0&&diff<864e5)timers.push(setTimeout(fn,diff))};
+  const settled=()=>{const l=S.logs[todayStr()];return l&&(l.status!=='')};
+  if(isPlanned(now)){
+    n.cue&&add(n.cueTime||p.time,()=>{if(!settled())notify(`もし「${p.anchor}」なら…`,`${p.behavior}を${p.minutes}分。しんどい日は「${p.mini}」だけでOK`,'cue')});
+    n.nudge&&add(n.nudgeTime,()=>{if(!settled())notify('今日はまだ記録がありません',`ミニ版「${p.mini}」だけでも、連続記録はつながります`,'nudge')});
+  }
+  if(now.getDay()===0&&n.review)add('19:00',()=>notify('週のふり返りの時間です','3分で今週をふり返り、来週のプランを整えましょう','review'));
+  const mid=new Date(now);mid.setHours(24,0,5,0);timers.push(setTimeout(()=>{scheduleLocal();render()},mid-now));
+}
+async function enablePeriodic(){
+  try{if(!swReg||!('periodicSync' in swReg))return false;
+    const st=await navigator.permissions.query({name:'periodic-background-sync'});if(st.state!=='granted')return false;
+    await swReg.periodicSync.register('ugoku-check',{minInterval:60*60*1000});return true}catch(e){return false}
+}
+function notifEnv(){
+  if(isIOS&&!isStandalone())return{ok:false,ios:true,msg:'iPhoneでは、まず「ホーム画面に追加」して、ホーム画面のアイコンから開くと通知をオンにできます。'};
+  if(!('Notification' in window))return{ok:false,msg:'このブラウザは通知に対応していません。「カレンダーに登録」を使うと確実にお知らせが届きます。'};
+  if(!SERVER){
+    if(location.protocol==='file:')return{ok:true,limited:true,msg:'ファイルとして開いているため、通知は「このページを開いている間」だけ届きます。公開版のURLから使うと、閉じていても届きます。'};
+    return{ok:true,limited:true,msg:'通知サーバーに接続できないため、通知は主にアプリを開いている間に届きます。'};
+  }
+  return{ok:true};
+}
+function b64uToBytes(s){const b=atob(s.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((s.length+3)%4));return Uint8Array.from(b,c=>c.charCodeAt(0))}
+async function turnOnNotif(){
+  const env=notifEnv();
+  if(!env.ok){if(env.ios)installGuide();else toast(env.msg);return false}
+  let perm=Notification.permission;
+  if(perm==='default'){try{perm=await Notification.requestPermission()}catch(e){}}
+  if(perm!=='granted'){toast('通知が許可されませんでした（ブラウザ・端末の設定で許可できます）');S.notif.enabled=false;save();return false}
+  S.notif.enabled=true;S.notif.dismissed=true;
+  let mode='local';
+  if(SERVER&&swReg){
+    try{
+      let sub=await swReg.pushManager.getSubscription();
+      if(sub&&sub.options&&sub.options.applicationServerKey){const k=new Uint8Array(sub.options.applicationServerKey);const want=b64uToBytes(SERVER.publicKey);if(k.length!==want.length||k.some((x,i)=>x!==want[i])){await sub.unsubscribe();sub=null}}
+      if(!sub)sub=await swReg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64uToBytes(SERVER.publicKey)});
+      S.notif.endpoint=sub.endpoint;
+      const r=await fetch(API('subscribe'),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({subscription:sub.toJSON(),schedule:schedulePayload()})});
+      if(r.ok)mode='push';else S.notif.endpoint='';
+    }catch(e){console.warn('push購読に失敗',e);S.notif.endpoint=''}
+  }
+  save();scheduleLocal();
+  if(mode==='local')await enablePeriodic();
+  notify('通知をオンにしました',mode==='push'?`${S.notif.cueTime||S.plan.time}ごろにお知らせします。アプリを閉じていても届きます`:`${S.notif.cueTime||S.plan.time}ごろにお知らせします`,'test');
+  toast(mode==='push'?'通知をオンにしました（閉じていても届きます）':'通知をオンにしました');
+  return true;
+}
+async function turnOffNotif(){
+  S.notif.enabled=false;
+  try{const sub=swReg&&await swReg.pushManager.getSubscription();if(sub){fetch(API('unsubscribe'),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({endpoint:sub.endpoint})}).catch(()=>{});await sub.unsubscribe()}}catch(e){}
+  S.notif.endpoint='';save();scheduleLocal();toast('通知をオフにしました');
+}
+function notifOffer(){
+  const env=notifEnv();
+  if(env.ios)return installGuide(true);
+  modal(`<div class="done"><div class="badge">🔔</div><h2>きっかけの時間にお知らせ</h2></div>
+    <p>「もし〇〇なら」の時間に通知が届きます。通知の<b>「やった！」「ミニ版」</b>を押すだけで、アプリを開かずに記録できます。</p>
+    ${env.ok?'':`<div class="note warn">${esc(env.msg)}</div>`}
+    ${env.limited?`<div class="note warn small">${esc(env.msg)}</div>`:''}
+    <label>通知する時刻</label><input type="time" id="nt" value="${esc(S.notif.cueTime||S.plan.time||'08:00')}">
+    <div class="cta"><button class="btn pri" id="yes" ${env.ok?'':'disabled'}><span class="e">🔔</span>オンにする</button><button class="btn" id="cal"><span class="e">📅</span>カレンダー登録</button></div>
+    <div class="links"><button class="btn ghost sm" id="later">あとで</button></div>`,
+  (sh,close)=>{
+    sh.querySelector('#yes').onclick=async()=>{S.notif.cueTime=sh.querySelector('#nt').value;if(!S.plan.time)S.plan.time=S.notif.cueTime;await turnOnNotif();close();render()};
+    sh.querySelector('#cal').onclick=()=>{downloadICS()};
+    sh.querySelector('#later').onclick=()=>{S.notif.dismissed=true;save();close();render()};
+  });
+}
+function canInstall(){return !isStandalone()&&(installEvt||isIOS)}
+async function installApp(){
+  if(installEvt){installEvt.prompt();try{await installEvt.userChoice}catch(e){}installEvt=null;render();return}
+  installGuide();
+}
+function installGuide(forNotif){
+  modal(`<div class="done"><div class="badge">📲</div><h2>ホーム画面に追加</h2></div>
+    <p>${forNotif?'iPhoneで通知を受け取るには、まずアプリをホーム画面に追加します。':'アプリのように、ワンタップで開けるようになります。'}</p>
+    ${isIOS?`<div class="ifthen compact" style="grid-template-columns:auto 1fr"><span class="k">1</span><span class="v" style="font-weight:500">Safariの下にある <b>共有ボタン</b>（□に↑）をタップ</span>
+     <span class="k">2</span><span class="v" style="font-weight:500"><b>「ホーム画面に追加」</b>を選んで「追加」</span>
+     <span class="k">3</span><span class="v" style="font-weight:500">ホーム画面の <b>うごく習慣</b> アイコンから開く</span>
+     <span class="k">4</span><span class="v" style="font-weight:500">「今日」画面の <b>通知をオンにする</b> をタップ</span></div>
+     <p class="muted small">Safari以外（Chromeなど）で開いている場合は、Safariでこのページを開いてください。記録はブラウザごとに保存されるため、ホーム画面のアプリで最初から設定するか、設定タブの書き出し／読み込みで移してください。</p>`
+    :`<p class="muted small">ブラウザのメニュー（︙）から「アプリをインストール」または「ホーム画面に追加」を選んでください。</p>`}
+    <button class="btn pri block" id="ok" style="margin-top:12px">わかった</button>`,(sh,close)=>{sh.querySelector('#ok').onclick=close});
+}
+function handleAction(a){
+  if(!S.onboarded)return;
+  go('today');
+  if(a==='full'||a==='mini'||a==='log')setTimeout(()=>{if(!doneOf(todayStr()))logSheet(a==='mini'?'mini':'full')},200);
+  if(a==='review')setTimeout(reviewSheet,200);
+}
+
+/* =========================================================
+   設定
+   ========================================================= */
+function renderSettings(){
+  const n=riskCount(),N=S.notif,env=notifEnv();
+  const perm='Notification' in window?Notification.permission:'unsupported';
+  $('#app').innerHTML=`<div class="card"><div class="sec-title"><span class="ic">🔔</span><h2>通知</h2></div>
+    ${env.ok&&!env.limited?'':`<div class="note warn small">${esc(env.msg)}</div>`}
+    ${perm==='denied'?'<div class="note bad small">ブラウザで通知がブロックされています。サイトの設定から許可してください。</div>':''}
+    <label class="switch"><span class="t">通知を使う<small>${N.enabled?(pushOn()?'オン（閉じていても届く）':'オン（開いている間）'):'オフ'}・許可状態：${({granted:'許可済み',denied:'ブロック',default:'未設定',unsupported:'非対応'})[perm]}</small></span><input type="checkbox" id="nEn" ${N.enabled?'checked':''}></label>
+    <div id="nOpts" class="${N.enabled?'':'hide'}">
+    <label class="switch"><span class="t">きっかけの時間<small>予定日に、if-thenプランをお知らせ</small></span><input type="time" id="nCueT" value="${esc(N.cueTime||S.plan.time)}"><input type="checkbox" id="nCue" ${N.cue?'checked':''}></label>
+    <label class="switch"><span class="t">未記録のときの声かけ<small>予定日にまだ記録がなければ</small></span><input type="time" id="nNudT" value="${esc(N.nudgeTime)}"><input type="checkbox" id="nNud" ${N.nudge?'checked':''}></label>
+    <label class="switch"><span class="t">週のふり返り<small>日曜 19:00</small></span><input type="checkbox" id="nRev" ${N.review?'checked':''}></label>
+    <button class="btn sm soft" id="nTest" style="margin-top:10px">テスト通知を送る</button></div>
+    <p class="muted small" style="margin-top:10px">確実に届けたいときは、プランタブの「📅 カレンダーに登録」も併用してください（スマホのカレンダーのアラームで届きます）。</p></div>
+  ${canInstall()?`<div class="card"><div class="sec-title"><span class="ic">📲</span><h2>ホーム画面に追加</h2></div><p class="small">アプリのようにワンタップで開けて、通知も届きやすくなります。</p><button class="btn sm pri" id="inst">追加する</button></div>`:''}
+  <div class="card"><div class="sec-title"><span class="ic">🩺</span><h2>安全チェック</h2></div>
+    <p>該当項目：<b>${n}</b> 件（${esc(S.safety.date||'未実施')}）</p>
+    ${n?`<label class="check"><input type="checkbox" id="clr" ${S.safety.clearance?'checked':''}>医療者から運動（高強度を含む）の許可を得ている</label>`:''}
+    <button class="btn sm" id="resafe" style="margin-top:6px">安全チェックをやり直す</button>
+    <p class="muted small">体調や治療内容が変わったら、やり直してください。</p></div>
+  <div class="card"><div class="sec-title"><span class="ic">💾</span><h2>データ</h2></div><p class="muted small">データはこの端末・このブラウザにのみ保存されています。機種変更や研究データの提出には書き出しを使ってください。</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" id="exp">JSONで書き出し</button><button class="btn sm" id="csv">CSVで書き出し</button><label class="btn sm" style="margin:0;color:var(--ink)">読み込み<input type="file" id="imp" accept=".json" class="hide"></label></div></div>
+  <div class="card"><div class="sec-title"><span class="ic">⚠️</span><h2>リセット</h2></div><button class="btn sm danger" id="reset">すべてのデータを消去</button></div>
+  <p class="muted small" style="text-align:center;padding:0 10px">行動変容技法（BCT Taxonomy v1）、COM-Bモデル、実行意図、習慣形成理論にもとづいて設計。医療上の助言の代わりにはなりません。</p>`;
+  const c=$('#clr');c&&(c.onchange=()=>{S.safety.clearance=c.checked;save();toast('更新しました')});
+  $('#nEn').onchange=async e=>{if(e.target.checked){const ok=await turnOnNotif();if(!ok)e.target.checked=false}else{await turnOffNotif()}renderSettings()};
+  const bindN=(id,key,prop='checked')=>{const el=$('#'+id);el&&(el.onchange=()=>{S.notif[key]=el[prop];save();scheduleLocal();toast('更新しました')})};
+  bindN('nCue','cue');bindN('nNud','nudge');bindN('nRev','review');bindN('nCueT','cueTime','value');bindN('nNudT','nudgeTime','value');
+  const tb=$('#nTest');tb&&(tb.onclick=async()=>{let ok=false;
+    if(pushOn()){try{const r=await fetch(API('test'),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({endpoint:S.notif.endpoint})});ok=r.ok;toast(ok?'サーバーから送信しました（数秒で届きます）':'送信に失敗しました。通知をいったんオフ→オンにしてください');return}catch(e){}}
+    ok=await notify('テスト通知',`もし「${S.plan.anchor}」なら、${S.plan.behavior}を${S.plan.minutes}分`,'test');toast(ok?'送信しました':'通知を送れませんでした')});
+  const ib=$('#inst');ib&&(ib.onclick=installApp);
+  $('#resafe').onclick=()=>modal(`<h2>安全チェック</h2>${SAFETY_Q.map(q=>`<label class="check"><input type="checkbox" data-q="${q.id}" ${S.safety.answers[q.id]?'checked':''}>${esc(q.t)}</label>`).join('')}<button class="btn pri block" id="ok" style="margin-top:12px">保存</button>`,(sh,close)=>{sh.querySelector('#ok').onclick=()=>{sh.querySelectorAll('[data-q]').forEach(x=>S.safety.answers[x.dataset.q]=x.checked);S.safety.date=todayStr();if(riskCount()===0)S.safety.clearance=false;save();close();render()}});
+  const dl=(name,data,type)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click()};
+  $('#exp').onclick=()=>dl(`habit-backup-${todayStr()}.json`,JSON.stringify(S,null,2),'application/json');
+  $('#csv').onclick=()=>{const rows=[['date','status','minutes','type','strength','rpe','mood_before','mood_after','symptoms','note']];
+    Object.keys(S.logs).sort().forEach(k=>{const l=S.logs[k];rows.push([k,l.status,l.min??'',l.type??'',l.strength?1:0,l.rpe??'',l.moodBefore??'',l.moodAfter??'',(l.flags||[]).join('|'),l.note??''])});
+    S.srbai.forEach(r=>rows.push([r.date,'srbai',r.mean,'','','','','','',r.items.join('|')]));
+    dl(`habit-logs-${todayStr()}.csv`,'﻿'+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n'),'text/csv')};
+  $('#imp').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||!d.plan||!d.logs)throw 0;localStorage.setItem(KEY,JSON.stringify(d));S=load();save();toast('読み込みました');render()}catch(_){toast('ファイルを読み込めませんでした')}};r.readAsText(f)};
+  $('#reset').onclick=()=>modal(`<h2>本当に消去しますか？</h2><p>記録・プラン・ふり返りがすべて消え、元に戻せません。必要なら先に書き出してください。</p><div class="cta"><button class="btn" id="no">やめる</button><button class="btn pri" id="yes" style="background:var(--bad)">消去する</button></div>`,(sh,close)=>{sh.querySelector('#no').onclick=close;sh.querySelector('#yes').onclick=()=>{localStorage.removeItem(KEY);S=blank();ob.step=0;close();scheduleLocal();render()}});
+}
+
+/* ---------- ルーティング ---------- */
+const TITLES={today:'うごく習慣ラボ',progress:'記録',plan:'プラン',habit:'習慣度',settings:'設定'};
+function go(t){tab=t;document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));render();window.scrollTo(0,0)}
+function render(){
+  if(!S.onboarded)return renderOnboarding();
+  $('#nav').classList.remove('hide');$('#topbar').classList.remove('hide');
+  const ph=phase();$('#phaseBadge').textContent=ph.e+' '+ph.n;$('#pageTitle').textContent=TITLES[tab];
+  ({today:renderToday,progress:renderProgress,plan:renderPlan,habit:renderHabit,settings:renderSettings})[tab]();
+}
+$('#nav').addEventListener('click',e=>{const b=e.target.closest('button');b&&go(b.dataset.tab)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.onboarded){applyPending();scheduleLocal();if(swReg&&swReg.active)swReg.active.postMessage('check');if(tab==='today'&&!document.querySelector('.modal'))render()}});
+
+(async()=>{
+  render();
+  await registerSW();
+  await applyPending();
+  syncSchedule();scheduleLocal();
+  if(S.onboarded&&tab==='today'&&!document.querySelector('.modal'))render();
+  const act=new URLSearchParams(location.search).get('do');
+  if(act){history.replaceState(null,'',location.pathname);handleAction(act)}
+})();
+</script>
+</body>
+</html>
